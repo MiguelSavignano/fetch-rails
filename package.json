@@ -1,6 +1,6 @@
 {
   "name": "fetch-rails",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "wrapper fetch with rails CSRF token.",
   "main": "fetch_rails.js",
   "scripts": {
