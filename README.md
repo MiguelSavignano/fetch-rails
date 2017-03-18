@@ -3,13 +3,57 @@ Use GitHub's [fetch](https://github.com/github/fetch) library with Ruby on Rails
 
 ## Installation
 
-0. Make sure you have the [fetch](https://github.com/github/fetch) library added to your `app.js` manifest file.
-1. Ensure your root layout file (usually called `app/views/layouts/application.html.erb`) has `<%= csrf_meta_tags %>` within the `<head>` tag.
-2. Copy the `fetch-rails.js` to your `/vendor/assets/javascripts/` folder.
-3. Add `//= require fetch-rails` directly below where you have added the fetch library to your `app.js` manifest.
+0. Make sure you have the [fetch](https://github.com/github/fetch) library.
+1. npm install fetch-rails --save
 
 ## Usage
 
+### JSON GET request
+
+```javascript
+Fetch.json('https://jsonplaceholder.typicode.com/posts')
+  .then( function( posts ){
+    console.log( posts ) // response in json
+  });
+```
+### JSON POST request
+
+```javascript
+Fetch.postJSON('https://jsonplaceholder.typicode.com/posts', {
+    title: 'foo',
+    body: 'bar',
+    userId: 1
+  })
+  .then( function( response ){
+    console.log(response) // response in json
+  }).catch( function( error ){
+    console.log(error) // error in json
+  });
+```
+### JSON PUT request
+
+```javascript
+Fetch.putJSON('https://jsonplaceholder.typicode.com/posts', {
+    title: 'foo',
+    body: 'bar',
+    userId: 1
+  })
+  .then( function( response ){
+    console.log(response) // response in json
+  }).catch( function( error ){
+    console.log( error ) // error in json
+  });
+```
+### JSON DELETE request
+
+```javascript
+Fetch.deleteJSON('https://jsonplaceholder.typicode.com/posts')
+  .then( function( response ){
+    console.log(response) // response in json
+  }).catch( function( error ){
+    console.log(error) // error in json
+  });
+```
 ### HTML GET request
 
 ```javascript
@@ -19,56 +63,12 @@ Fetch.html( '/api/web/get-html' )
   });
 ```
 
-### JSON GET request
-
-```javascript
-// endpoint returns { name: 'Adam', age: 30 }
-Fetch.json( '/api/web/get-json' )
-  .then( function( data ){
-    this.name = data.name;
-    this.age = data.age;
-  });
-```
-
 ### Text GET request
 
 ```javascript
 Fetch.text( '/api/web/get-text' )
   .then( function( text ){
     document.querySelector( '.item' ).innerText = text;
-  });
-```
-
-### Form POST request
-
-```javascript
-Fetch.post( '/api/web/submit-form', 'form.my-form' )
-  .then( function( response ){
-    document.querySelector( '.alert' ).innerText = 'Form submitted!';
-  }).catch( function( error ){
-    document.querySelector( '.alert' ).innerText = error;
-  });
-```
-
-#### With file uploads
-
-```javascript
-Fetch.post( '/api/web/submit-form', 'form.my-form', 'input.file-uploader' )
-  .then( function( response ){
-    document.querySelector( '.alert' ).innerText = 'File uploaded!';
-  }).catch( function( error ){
-    document.querySelector( '.alert' ).innerText = error;
-  });
-```
-
-### JSON POST request
-
-```javascript
-Fetch.postJSON( '/api/web/post-json', { name: 'Adam', age: 30 } )
-  .then( function( response ){
-    document.querySelector( '.alert' ).innerText = 'JSON submitted!';
-  }).catch( function( error ){
-    document.querySelector( '.alert' ).innerText = error;
   });
 ```
 

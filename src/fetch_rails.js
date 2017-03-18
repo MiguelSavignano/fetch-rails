@@ -63,6 +63,14 @@ const Fetch = {
     options.method = 'put'
     return fetch(url, options).then(status).then(json)
   }, 
+  deleteJSON: (url, body, options) => {
+    options = headers(credentials(options))
+    options.body = JSON.stringify(body)
+    options.headers['Accept'] = 'application/json'
+    options.headers['Content-Type'] = 'application/json'
+    options.method = 'delete'
+    return fetch(url, options).then(status).then(json)
+  }, 
   uploadFile: (url, form, file, options) => {
     var data = new FormData(document.querySelector(form))
     data.append('file', file.files[0])
