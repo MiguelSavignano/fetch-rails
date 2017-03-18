@@ -1,4 +1,5 @@
 const headers = (options = {}) => {
+  options.headers = {}
   options.headers['X-Requested-With'] = 'XMLHttpRequest'
   options.headers['X-CSRF-Token'] = getCSRF()
   return options
