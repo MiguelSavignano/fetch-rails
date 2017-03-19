@@ -1,85 +1,120 @@
-const headers = (options = {}) => {
-  options.headers = {}
-  options.headers['X-Requested-With'] = 'XMLHttpRequest'
-  options.headers['X-CSRF-Token'] = getCSRF()
-  return options
-}
+const merge = (object, otherObject) => Object.assign({}, object, otherObject)
 
 const getCSRF = () => (
   document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 )
 
-const credentials = options => {
-  if (options == null) options = {}
-  if (options.credentials == null) options.credentials = 'same-origin'
-  return options
+const mergeParameters = (url = "", params = {}) => {
+  if (!params || params == {}) {
+    return url
+  }
+  var esc = encodeURIComponent
+  var query = Object.keys(params)
+    .map(key => `${esc(key)}=${esc(params[key])}`)
+    .join('&')
+  return `${url}?${query}`
 }
 
-const status = response => {
-  if (response.ok) {
+const defaultHeadersJSON = () => ({
+  "X-Requested-With": 'XMLHttpRequest',
+  'X-CSRF-Token': getCSRF(),
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+})
+
+const defaultHeaders = () => ({
+  "X-Requested-With": 'XMLHttpRequest',
+  'X-CSRF-Token': getCSRF(),
+})
+
+const defaultCredentials = () => 'same-origin'
+
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
     return response
   } else {
-    var error = new Error(response.statusText || response.status)
+    var error = new Error(response.statusText)
     error.response = response
     throw error
   }
 }
 
-const json = response => response.json()
+const parseJSON = response => response.json()
 
-const text = response => response.text()
+const parseText = response => response.text()
 
 const Fetch = {
-  json: (url, options) => {
-    options = headers(credentials(options))
-    options.headers['Accept'] = 'application/json'
-    options.headers['Content-Type'] = 'application/json'
-    return fetch(url, options).then(status).then(json)
+  json: (url, params) => {
+    var url = mergeParameters(url, params)
+    var options = {
+      headers: defaultHeadersJSON(),
+      credentials: defaultCredentials(),
+    }
+    return fetch(url, options).then(checkStatus).then(parseJSON)
   },
-  postJSON: (url, body, options) => {
-    options = headers(credentials(options))
-    options.body = JSON.stringify(body)
-    options.headers['Accept'] = 'application/json'
-    options.headers['Content-Type'] = 'application/json'
-    options.method = 'post'
-    return fetch(url, options).then(status).then(json)
+  postJSON: (url, body) => {
+    var options = {
+      headers: defaultHeadersJSON(),
+      credentials: defaultCredentials(),
+      method: 'post',
+      body: JSON.stringify(body),
+    }
+    return fetch(url, options).then(checkStatus).then(parseJSON)
   },
-  putJSON: (url, body, options) => {
-    options = headers(credentials(options))
-    options.body = JSON.stringify(body)
-    options.headers['Accept'] = 'application/json'
-    options.headers['Content-Type'] = 'application/json'
-    options.method = 'put'
-    return fetch(url, options).then(status).then(json)
-  }, 
-  deleteJSON: (url, body, options) => {
-    options = headers(credentials(options))
-    options.body = JSON.stringify(body)
-    options.headers['Accept'] = 'application/json'
-    options.headers['Content-Type'] = 'application/json'
-    options.method = 'delete'
-    return fetch(url, options).then(status).then(json)
-  }, 
-  html: (url, options) => (
-    fetch(url, headers(credentials(options))).then(status)
-  ),
-  text: (url, options) => (
-    fetch(url, headers(credentials(options))).then(status).then(text)
-  ),
-  postForm: (url, form, options) => {
-    options = headers(credentials(options))
-    options.body = new FormData(document.querySelector(form))
-    options.method = 'post'
-    return fetch(url, options).then(status)
+  putJSON: (url, body) => {
+    var options = {
+      headers: defaultHeadersJSON(),
+      credentials: defaultCredentials(),
+      method: 'put',
+      body: JSON.stringify(body),
+    }
+    return fetch(url, options).then(checkStatus).then(parseJSON)
   },
-  uploadFile: (url, form, file, options) => {
-    var data = new FormData(document.querySelector(form))
-    data.append('file', file.files[0])
-    options = headers(credentials(options))
-    options.body = data
-    options.method = 'post'
-    return fetch(url, options).then(status)
+  deleteJSON: (url) => {
+    var options = {
+      headers: defaultHeadersJSON(),
+      credentials: defaultCredentials(),
+      method: 'delete',
+    }
+    return fetch(url, options).then(checkStatus).then(parseJSON)
   },
+  html: (url, params) => {
+    var url = mergeParameters(url, params)
+    var options = {
+      headers: defaultHeaders(),
+      credentials: defaultCredentials(),
+    }
+    return fetch(url, options).then(checkStatus)
+  },
+  text: (url, options) => {
+    var url = mergeParameters(url, params)
+    var options = {
+      headers: defaultHeaders(),
+      credentials: defaultCredentials(),
+    }
+    return fetch(url, options).then(checkStatus).then(parseText)
+  },
+  postForm: (url, form) => {
+    var options = {
+      headers: defaultHeadersHTML(),
+      credentials: defaultCredentials(),
+      body: new FormData(document.querySelector(form)),
+      method: 'post',
+    }
+    return fetch(url, options).then(checkStatus)
+  }
 }
+
+// uploadFile: (url, form, file, options) => {
+//   var data = new FormData(document.querySelector(form))
+//   data.append('file', file.files[0])
+//   var options = {
+//     headers: defaultHeaders(),
+//     credentials: defaultCredentials(),
+//     body: new FormData(document.querySelector(form)),
+//     method: 'post',
+//   }
+//   return fetch(url, options).then(checkStatus)
+// },
 
 export default Fetch
