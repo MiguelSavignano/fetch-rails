@@ -40,13 +40,15 @@ const checkStatus = (response) => {
 }
 const Fetch = {
   checkStatus: (response) => {
-    if (response.status >= 200 && response.status < 300) {
-      return response
-    } else {
-      var error = new Error(response.statusText)
-      error.response = response
-      throw error
-    }
+    return new Promise( (resolve, reject) => {
+      if(response.status >= 200 && response.status < 300) {
+        resolve(response)
+      }else{
+        response.json().then( (response_json) => {
+          reject(response_json)
+        })
+      }
+    })
   },
   json: (url, params) => {
     var url = mergeParameters(url, params)

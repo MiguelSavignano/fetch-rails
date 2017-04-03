@@ -71,6 +71,39 @@ Fetch.text( '/api/web/get-text' )
     document.querySelector( '.item' ).innerText = text;
   });
 ```
+## Fetch.checkStatus
+The checkStatus function return a primise if the status it's ok resolve the primise else return reject primise and parse in json the error response.
+
+```javascript
+  import Fetch form 'fetch-rails'
+
+  Fetch.postJSON("/comment", comment)
+  .then( (comment) => {
+    console.log(comment) // { text: "Hi", user_id:1, creted_at: "2017/03/03" }
+  })
+  .catch( (errors) => {
+    console.log(errors)  // { text: ["can't be balank] }
+  })
+
+  const checkStatus = function checkStatus(response) {
+    return new Promise((resolve, reject) => {
+      if(response.status >= 200 && response.status < 300) {
+        resolve(response)
+      }else {
+        response.json().then( (response_json) => {
+          reject(response_json)
+        })
+      }
+    })
+```
+
+# You can override checkStatus function like this
+
+```javascript
+  import Fetch form 'fetch-rails'
+
+  Fetch.checkStatus = myFunction
+```
 
 ## Support
 
