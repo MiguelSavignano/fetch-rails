@@ -9,9 +9,13 @@ const encodeSubObject = (key, subObject) => {
 }
 
 const encodeSubArray = (key, subArray) => {  
-  return subArray.map(_value => (
-    `${key}%5B%5D=${_value}`
-  )).join('&')
+  return subArray.map(_value => {
+    if (typeof value == 'object') {
+      encodeSubObject()
+    }else{
+      return `${key}%5B%5D=${_value}`
+    }
+  }).join('&')
 }
 
 const encodeParams = (params) => {
