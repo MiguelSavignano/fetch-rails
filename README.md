@@ -57,7 +57,7 @@ Fetch.deleteJSON('https://jsonplaceholder.typicode.com/posts')
 ### HTML GET request
 
 ```javascript
-Fetch.html( '/api/web/get-html' )
+Fetch.html('/api/get-html')
   .then( function( response ){
     document.body.innerHTML = response.data;
   });
@@ -66,18 +66,18 @@ Fetch.html( '/api/web/get-html' )
 ### Text GET request
 
 ```javascript
-Fetch.text( '/api/web/get-text' )
+Fetch.text('/api/get-text')
   .then( function( text ){
-    document.querySelector( '.item' ).innerText = text;
+    document.querySelector('.item').innerText = text;
   });
 ```
 ## Fetch.checkStatus
-The checkStatus function return a primise if the status it's ok resolve the primise else return reject primise and parse in json the error response.
+The checkStatus function return a Promise and parse the error in json.
 
 ```javascript
   import Fetch form 'fetch-rails'
 
-  Fetch.postJSON("/comment", comment)
+  Fetch.postJSON('/comment', comment)
   .then( (comment) => {
     console.log(comment) // { text: "Hi", user_id:1, creted_at: "2017/03/03" }
   })
@@ -85,8 +85,8 @@ The checkStatus function return a primise if the status it's ok resolve the prim
     console.log(errors)  // { text: ["can't be balank] }
   })
 
-  const checkStatus = function checkStatus(response) {
-    return new Promise((resolve, reject) => {
+  function checkStatus(response) {
+    return new Promise( (resolve, reject) => {
       if(response.status >= 200 && response.status < 300) {
         resolve(response)
       }else {
@@ -95,6 +95,7 @@ The checkStatus function return a primise if the status it's ok resolve the prim
         })
       }
     })
+  }
 ```
 
 # You can override checkStatus function like this
@@ -118,3 +119,6 @@ The checkStatus function return a primise if the status it's ok resolve the prim
 * IE 9+
 * Safari mobile latest
 * Chrome mobile latest
+
+### TODO
+* Delete dependency $.param function
