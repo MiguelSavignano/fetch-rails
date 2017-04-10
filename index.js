@@ -1,1 +1,1 @@
-module.exports = require('./lib/fetch_rails');
+module.exports = require('./lib/fetch-rails');
