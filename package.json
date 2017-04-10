@@ -25,5 +25,8 @@
     "mocha": "^3.2.0",
     "uglifyjs-webpack-plugin": "^0.4.1",
     "webpack": "^2.3.3"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^2.0.3"
   }
 }
