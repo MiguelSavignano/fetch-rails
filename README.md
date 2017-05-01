@@ -2,10 +2,9 @@
 Use GitHub's [fetch](https://github.com/github/fetch) library with Ruby on Rails. Based heavily on [this wrapper](https://gist.github.com/dgraham/92e4c45da3707a3fe789) to encapsulate some of the callback handling of HTTP status codes.
 
 ## Installation
-
-0. Make sure you have the [fetch](https://github.com/github/fetch) library.
-1. npm install fetch-rails --save
-
+```sh
+npm install fetch-rails --save
+```
 ## Usage
 
 ### JSON GET request
