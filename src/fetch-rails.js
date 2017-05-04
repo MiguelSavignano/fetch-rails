@@ -1,5 +1,3 @@
-import 'whatwg-fetch'
-
 const getCSRF = () => (
   document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 )
