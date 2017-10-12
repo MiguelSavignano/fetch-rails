@@ -74,7 +74,7 @@ Fetch.text('/api/get-text')
 The checkStatus function return a Promise and parse the error in json.
 
 ```javascript
-  import Fetch form 'fetch-rails'
+  import Fetch from 'fetch-rails'
 
   Fetch.postJSON('/comment', comment)
   .then( (comment) => {
@@ -100,7 +100,7 @@ The checkStatus function return a Promise and parse the error in json.
 # You can override checkStatus function like this
 
 ```javascript
-  import Fetch form 'fetch-rails'
+  import Fetch from 'fetch-rails'
 
   Fetch.checkStatus = myFunction
 ```
