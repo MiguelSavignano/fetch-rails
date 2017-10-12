@@ -100,7 +100,7 @@ The checkStatus function return a Promise and parse the error in json.
 # You can override checkStatus function like this
 
 ```javascript
-  import Fetch form 'fetch-rails'
+  import Fetch from 'fetch-rails'
 
   Fetch.checkStatus = myFunction
 ```
