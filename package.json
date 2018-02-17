@@ -5,8 +5,8 @@
   "main": "fetch_rails.js",
   "repository": "https://github.com/MiguelSavignano/fetch-rails",
   "scripts": {
-    "start": "webpack -w --config webpack.config.js",
-    "test": "./build_test.sh && mocha"
+    "build": "babel src/fetch-rails.js --out-file lib/fetch-rails.js",
+    "test": "mocha"
   },
   "keywords": [
     "fetch",
