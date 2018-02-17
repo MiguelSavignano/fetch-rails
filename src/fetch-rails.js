@@ -1,3 +1,5 @@
+import { encodeParams } from "./helpers"
+
 const getCSRF = () => (
   document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 )
@@ -6,7 +8,7 @@ const mergeParameters = (url = "", params = {}) => {
   if (!params || Object.keys(params).length === 0) {
     return url
   }
-  const query = $.param(params)
+  const query = encodeParams(params)
   return `${url}?${query}`
 }
 

@@ -1,38 +1,43 @@
-const isEmptyObject = (obj) => Object.keys(obj).length === 0
+export const encodeParams = function(a) {
+  var s = [],
+    rbracket = /\[\]$/,
+    isArray = function(obj) {
+      return Object.prototype.toString.call(obj) === '[object Array]';
+    },
+    add = function(k, v) {
+      v = typeof v === 'function' ? v() : v === null ? '' : v === undefined ? '' : v;
+      s[s.length] = encodeURIComponent(k) + '=' + encodeURIComponent(v);
+    },
+    buildParams = function(prefix, obj) {
+      var i, len, key;
 
-const encodeSubObject = (key, subObject) => {  
-  var esc = encodeURIComponent
-  return Object.keys(subObject).map(subKey => {
-    let subValue = subObject[subKey]
-    return `${key}%5B${esc(subKey)}%5D=${esc(subValue)}`
-  }).join("&")
-}
-
-const encodeSubArray = (key, subArray) => {  
-  return subArray.map(_value => {
-    if (typeof value == 'object') {
-      encodeSubObject()
-    }else{
-      return `${key}%5B%5D=${_value}`
-    }
-  }).join('&')
-}
-
-const encodeParams = (params) => {
-  var esc = encodeURIComponent
-  var query = Object.keys(params)
-    .map(key => {
-      let value = params[key]
-      if (Array.isArray(value)){
-        return encodeSubArray(key, value)
-      } else if (typeof value == 'object'){
-        return encodeSubObject(key, value)
-      }else{
-        return `${esc(key)}=${esc(value)}`
+      if (prefix) {
+        if (isArray(obj)) {
+          for (i = 0, len = obj.length; i < len; i++) {
+            if (rbracket.test(prefix)) {
+              add(prefix, obj[i]);
+            } else {
+              buildParams(prefix + '[' + (typeof obj[i] === 'object' ? i : '') + ']', obj[i]);
+            }
+          }
+        } else if (obj && String(obj) === '[object Object]') {
+          for (key in obj) {
+            buildParams(prefix + '[' + key + ']', obj[key]);
+          }
+        } else {
+          add(prefix, obj);
+        }
+      } else if (isArray(obj)) {
+        for (i = 0, len = obj.length; i < len; i++) {
+          add(obj[i].name, obj[i].value);
+        }
+      } else {
+        for (key in obj) {
+          buildParams(key, obj[key]);
+        }
       }
-    })
-    .join('&')
-  return query
-}
+      return s;
+    };
 
-export { encodeParams }
+  return buildParams('', a).join('&').replace(/%20/g, '+');
+}
