@@ -118,6 +118,3 @@ The checkStatus function return a Promise and parse the error in json.
 * IE 9+
 * Safari mobile latest
 * Chrome mobile latest
-
-### TODO
-* Delete dependency $.param function
