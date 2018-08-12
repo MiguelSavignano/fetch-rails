@@ -1,5 +1,5 @@
 const Fetch = {
-  getCSRF = function() {
+  getCSRF: function() {
     let element = document.querySelector('meta[name="csrf-token"]')
     if (element) {
       return element.getAttribute('content')
