@@ -1,34 +1,23 @@
-const getCSRF = () => (
-  document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-)
-
-const mergeParameters = (url = "", params = {}) => {
-  if (!params || Object.keys(params).length === 0) {
-    return url
-  }
-  const query = encodeParams(params)
-  return `${url}?${query}`
-}
-
-const defaultHeadersJSON = () => ({
-  "X-Requested-With": 'XMLHttpRequest',
-  'X-CSRF-Token': getCSRF(),
-  'Accept': 'application/json',
-  'Content-Type': 'application/json',
-})
-
-const defaultHeaders = () => ({
-  "X-Requested-With": 'XMLHttpRequest',
-  'X-CSRF-Token': getCSRF(),
-})
-
-const defaultCredentials = () => 'same-origin'
-
-const parseJSON = response => response.json()
-
-const parseText = response => response.text()
-
 const Fetch = {
+  getCSRF = function() {
+    let element = document.querySelector('meta[name="csrf-token"]')
+    if (element) {
+      return element.getAttribute('content')
+    } else {
+      return ""
+    }
+  },
+  defaultHeadersJSON: function() { return {
+    "X-Requested-With": 'XMLHttpRequest',
+    'X-CSRF-Token': this.getCSRF(),
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }},
+  defaultHeaders: function() { return {
+    "X-Requested-With": 'XMLHttpRequest',
+    'X-CSRF-Token': this.getCSRF(),
+  }},
+  defaultCredentials = () => 'same-origin',
   checkStatus: (response) => {
     return new Promise( (resolve, reject) => {
       if(response.status >= 200 && response.status < 300) {
@@ -40,60 +29,60 @@ const Fetch = {
       }
     })
   },
-  json: (url, params) => {
+  json: function(url, params) {
     var url = mergeParameters(url, params)
     var options = {
-      headers: defaultHeadersJSON(),
-      credentials: defaultCredentials(),
+      headers: this.defaultHeadersJSON(),
+      credentials: this.defaultCredentials(),
     }
     return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
   },
-  postJSON: (url, body) => {
+  postJSON: function(url, body) {
     var options = {
-      headers: defaultHeadersJSON(),
-      credentials: defaultCredentials(),
+      headers: this.defaultHeadersJSON(),
+      credentials: this.defaultCredentials(),
       method: 'post',
       body: JSON.stringify(body),
     }
     return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
   },
-  putJSON: (url, body) => {
+  putJSON: function(url, body) {
     var options = {
-      headers: defaultHeadersJSON(),
-      credentials: defaultCredentials(),
+      headers: this.defaultHeadersJSON(),
+      credentials: this.defaultCredentials(),
       method: 'put',
       body: JSON.stringify(body),
     }
     return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
   },
-  deleteJSON: (url) => {
+  deleteJSON: function(url) {
     var options = {
-      headers: defaultHeadersJSON(),
-      credentials: defaultCredentials(),
+      headers: this.defaultHeadersJSON(),
+      credentials: this.defaultCredentials(),
       method: 'delete',
     }
     return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
   },
-  html: (url, params) => {
+  html: function(url, params) {
     var url = mergeParameters(url, params)
     var options = {
       headers: defaultHeaders(),
-      credentials: defaultCredentials(),
+      credentials: this.defaultCredentials(),
     }
     return fetch(url, options).then(Fetch.checkStatus)
   },
-  text: (url, options) => {
+  text: function(url, options) {
     var url = mergeParameters(url, params)
     var options = {
-      headers: defaultHeaders(),
-      credentials: defaultCredentials(),
+      headers: this.defaultHeaders(),
+      credentials: this.defaultCredentials(),
     }
     return fetch(url, options).then(Fetch.checkStatus).then(parseText)
   },
-  postForm: (url, form) => {
+  postForm: function(url, form)  {
     var options = {
-      headers: defaultHeadersHTML(),
-      credentials: defaultCredentials(),
+      headers: this.defaultHeadersHTML(),
+      credentials: this.this.defaultCredentials(),
       body: new FormData(document.querySelector(form)),
       method: 'post',
     }
@@ -102,6 +91,18 @@ const Fetch = {
 }
 
 // helpers
+const mergeParameters = (url = "", params = {}) => {
+  if (!params || Object.keys(params).length === 0) {
+    return url
+  }
+  const query = encodeParams(params)
+  return `${url}?${query}`
+}
+
+const parseJSON = response => response.json()
+
+const parseText = response => response.text()
+
 export const encodeParams = function(a) {
   var s = [],
     rbracket = /\[\]$/,
