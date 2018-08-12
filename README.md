@@ -5,6 +5,38 @@ Use GitHub's [fetch](https://github.com/github/fetch) library with Ruby on Rails
 ```sh
 npm install fetch-rails --save
 ```
+## Javascript vainilla
+
+* All responses in JSON
+```javascript
+fetch(url, options).then((response) => response.json()).catch((response) => response.json())
+```
+* POST, PUT, DELETE request
+```javascript
+fetch(url, {
+  method: 'POST',
+  body: JSON.stringify(body),
+}).then((response) => response.json()).catch((response) => response.json())
+```
+
+With fetch-rails, it's more simple and you can getCSRF, encodeParams, checkStatus, set default json headers, set default credentials, and you can override all of this.
+
+global override
+```javascript
+import Fetch from "fetch-rails"
+Fetch.defaultHeaders = () => ({
+  "X-Requested-With": 'XMLHttpRequest',
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer 1234',
+})
+```
+or override by request
+```javascript
+import Fetch from "fetch-rails"
+Fetch.json("apiUrl", {}, {headers: { ...Fetch.defaultHeadersJSON, "Authorization": 'Bearer 1234'} })
+```
+
 ## Usage
 
 ### JSON GET request
@@ -81,7 +113,7 @@ The checkStatus function return a Promise and parse the error in json.
     console.log(comment) // { text: "Hi", user_id:1, creted_at: "2017/03/03" }
   })
   .catch( (errors) => {
-    console.log(errors)  // { text: ["can't be balank] }
+    console.log(errors)  // { text: ["can't be blank] }
   })
 
   function checkStatus(response) {
