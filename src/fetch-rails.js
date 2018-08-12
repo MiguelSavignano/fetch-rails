@@ -17,7 +17,7 @@ const Fetch = {
     "X-Requested-With": 'XMLHttpRequest',
     'X-CSRF-Token': this.getCSRF(),
   }},
-  defaultCredentials = () => 'same-origin',
+  defaultCredentials: () => 'same-origin',
   checkStatus: (response) => {
     return new Promise( (resolve, reject) => {
       if(response.status >= 200 && response.status < 300) {
