@@ -1,5 +1,5 @@
 # fetch-rails
-![dockerize](https://img.shields.io/badge/weight-59kb-green.svg?longCache=true&style=flat)
+![dockerize](https://img.shields.io/badge/weight-4kB-green.svg?longCache=true&style=flat)
 Use GitHub's [fetch](https://github.com/github/fetch) library with Ruby on Rails. Based heavily on [this wrapper](https://gist.github.com/dgraham/92e4c45da3707a3fe789) to encapsulate some of the callback handling of HTTP status codes.
 ## Installation
 ```sh
