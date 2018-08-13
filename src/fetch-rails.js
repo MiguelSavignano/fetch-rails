@@ -37,31 +37,23 @@ const Fetch = {
     }
     return fetch(url, options).then(this.checkStatus).then(parseJSON)
   },
-  postJSON: function(url, body, options) {
+  requestDataJSON: function(method, url, body, options) {
     var options = {
       headers: this.defaultHeadersJSON(options),
       credentials: this.defaultCredentials(options),
-      method: 'post',
+      method: method,
       body: JSON.stringify(body),
     }
     return fetch(url, options).then(this.checkStatus).then(parseJSON)
+  },
+  postJSON: function(url, body, options) {
+    return this.requestDataJSON("post", url, body, options)
   },
   putJSON: function(url, body, options) {
-    var options = {
-      headers: this.defaultHeadersJSON(options),
-      credentials: this.defaultCredentials(options),
-      method: 'put',
-      body: JSON.stringify(body),
-    }
-    return fetch(url, options).then(this.checkStatus).then(parseJSON)
+    return this.requestDataJSON("put", url, body, options)
   },
   deleteJSON: function(url, options) {
-    var options = {
-      headers: this.defaultHeadersJSON(options),
-      credentials: this.defaultCredentials(options),
-      method: 'delete',
-    }
-    return fetch(url, options).then(this.checkStatus).then(parseJSON)
+    return this.requestDataJSON("delete", url, body, options)
   },
   html: function(url, params, options) {
     var url = mergeParameters(url, params)
@@ -84,7 +76,7 @@ const Fetch = {
       headers: this.defaultHeadersHTML(options),
       credentials: this.defaultCredentials(options),
       body: new FormData(document.querySelector(form)),
-      method: 'post',
+      method: options.method || 'post',
     }
     return fetch(url, options).then(this.checkStatus)
   }
