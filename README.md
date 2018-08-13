@@ -124,7 +124,7 @@ The checkStatus function return a Promise and parse the error in json.
 
   Fetch.postJSON('/comment', comment)
   .then( (comment) => {
-    console.log(comment) // { text: "Hi", user_id:1, creted_at: "2017/03/03" }
+    console.log(comment) // { text: "Hi" }
   })
   .catch( (errors) => {
     console.log(errors)  // { text: ["can't be blank] }
