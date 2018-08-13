@@ -7,17 +7,17 @@ const Fetch = {
       return ""
     }
   },
-  defaultHeadersJSON: function() { return {
+  defaultHeadersJSON: function(options) { return options.headers || {
     "X-Requested-With": 'XMLHttpRequest',
     'X-CSRF-Token': this.getCSRF(),
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   }},
-  defaultHeaders: function() { return {
+  defaultHeaders: function(options) { return options.headers || {
     "X-Requested-With": 'XMLHttpRequest',
     'X-CSRF-Token': this.getCSRF(),
   }},
-  defaultCredentials: () => 'same-origin',
+  defaultCredentials: (options) => options.credentials || 'same-origin',
   checkStatus: (response) => {
     return new Promise( (resolve, reject) => {
       if(response.status >= 200 && response.status < 300) {
@@ -29,64 +29,64 @@ const Fetch = {
       }
     })
   },
-  json: function(url, params) {
+  json: function(url, params, options) {
     var url = mergeParameters(url, params)
     var options = {
-      headers: this.defaultHeadersJSON(),
-      credentials: this.defaultCredentials(),
+      headers: this.defaultHeadersJSON(options),
+      credentials: this.defaultCredentials(options),
     }
-    return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
+    return fetch(url, options).then(this.checkStatus).then(parseJSON)
   },
-  postJSON: function(url, body) {
+  postJSON: function(url, body, options) {
     var options = {
-      headers: this.defaultHeadersJSON(),
-      credentials: this.defaultCredentials(),
+      headers: this.defaultHeadersJSON(options),
+      credentials: this.defaultCredentials(options),
       method: 'post',
       body: JSON.stringify(body),
     }
-    return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
+    return fetch(url, options).then(this.checkStatus).then(parseJSON)
   },
-  putJSON: function(url, body) {
+  putJSON: function(url, body, options) {
     var options = {
-      headers: this.defaultHeadersJSON(),
-      credentials: this.defaultCredentials(),
+      headers: this.defaultHeadersJSON(options),
+      credentials: this.defaultCredentials(options),
       method: 'put',
       body: JSON.stringify(body),
     }
-    return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
+    return fetch(url, options).then(this.checkStatus).then(parseJSON)
   },
-  deleteJSON: function(url) {
+  deleteJSON: function(url, options) {
     var options = {
-      headers: this.defaultHeadersJSON(),
-      credentials: this.defaultCredentials(),
+      headers: this.defaultHeadersJSON(options),
+      credentials: this.defaultCredentials(options),
       method: 'delete',
     }
-    return fetch(url, options).then(Fetch.checkStatus).then(parseJSON)
+    return fetch(url, options).then(this.checkStatus).then(parseJSON)
   },
-  html: function(url, params) {
+  html: function(url, params, options) {
     var url = mergeParameters(url, params)
     var options = {
-      headers: this.defaultHeaders(),
-      credentials: this.defaultCredentials(),
+      headers: this.defaultHeaders(options),
+      credentials: this.defaultCredentials(options),
     }
-    return fetch(url, options).then(Fetch.checkStatus)
+    return fetch(url, options).then(this.checkStatus)
   },
   text: function(url, options) {
     var url = mergeParameters(url, params)
     var options = {
-      headers: this.defaultHeaders(),
-      credentials: this.defaultCredentials(),
+      headers: this.defaultHeaders(options),
+      credentials: this.defaultCredentials(options),
     }
-    return fetch(url, options).then(Fetch.checkStatus).then(parseText)
+    return fetch(url, options).then(this.checkStatus).then(parseText)
   },
-  postForm: function(url, form)  {
+  postForm: function(url, form, options)  {
     var options = {
-      headers: this.defaultHeadersHTML(),
-      credentials: this.this.defaultCredentials(),
+      headers: this.defaultHeadersHTML(options),
+      credentials: this.defaultCredentials(options),
       body: new FormData(document.querySelector(form)),
       method: 'post',
     }
-    return fetch(url, options).then(Fetch.checkStatus)
+    return fetch(url, options).then(this.checkStatus)
   }
 }
 
