@@ -1,6 +1,6 @@
-var assert          = require('assert')
-var Fetch         = require('../lib/fetch-rails')
-var encodeParams = Fetch.encodeParams
+var assert        = require('assert')
+var Fetch         = require('../lib/fetch-rails').default
+var encodeParams  = require('../lib/fetch-rails').encodeParams
 
 describe('helpers', function () {
   describe('#encodeParams(params)', function () {
