@@ -11,6 +11,12 @@ npm install fetch-rails --save
 ```javascript
 fetch(url, options).then((response) => response.json()).catch((response) => response.json())
 ```
+* GET with params
+```javascript
+// params = { q: { name: "Jhon" } }
+fetch("apiUrl?q%5Bname%5D=Jhon", options).then((response) => response.json()).catch((response) => response.json())
+
+```
 * POST, PUT, DELETE request
 ```javascript
 fetch(url, {
@@ -47,6 +53,14 @@ Fetch.json('https://jsonplaceholder.typicode.com/posts')
     console.log( posts ) // response in json
   });
 ```
+Send params without encoding
+```javascript
+Fetch.json('https://jsonplaceholder.typicode.com/posts', { search: { name: "Jhon" }})
+  .then( function( posts ){
+    console.log( posts ) // response in json
+  });
+```
+
 ### JSON POST request
 
 ```javascript
