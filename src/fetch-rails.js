@@ -66,7 +66,7 @@ const Fetch = {
   html: function(url, params) {
     var url = mergeParameters(url, params)
     var options = {
-      headers: defaultHeaders(),
+      headers: this.defaultHeaders(),
       credentials: this.defaultCredentials(),
     }
     return fetch(url, options).then(Fetch.checkStatus)
