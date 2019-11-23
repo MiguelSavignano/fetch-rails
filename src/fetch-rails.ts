@@ -11,7 +11,7 @@ interface IJSONOptions {
 
 const Fetch = {
   getCSRF: function() {
-    let element = document.querySelector('meta[name="csrf-token"]');
+    const element = document.querySelector('meta[name="csrf-token"]');
     if (element) {
       return element.getAttribute('content');
     } else {
@@ -43,19 +43,19 @@ const Fetch = {
       if (response.status >= 200 && response.status < 300) {
         resolve(response);
       } else {
-        response.json().then(response_json => {
-          reject(response_json);
+        response.json().then(responseJson => {
+          reject(responseJson);
         });
       }
     });
   },
   json: function(url: string, params: object, options: IDefaultOptions) {
-    var url = mergeParameters(url, params);
-    var options = {
+    url = mergeParameters(url, params);
+    const optionsDefault = {
       headers: this.defaultHeadersJSON(options),
       credentials: this.defaultCredentials(options),
     };
-    return fetch(url, options)
+    return fetch(url, optionsDefault)
       .then(this.checkStatus)
       .then(parseJSON);
   },
@@ -65,13 +65,13 @@ const Fetch = {
     body: object,
     options: IJSONOptions,
   ) {
-    var options = {
+    const optionsDefault = {
       headers: this.defaultHeadersJSON(options),
       credentials: this.defaultCredentials(options),
       method: method,
       body: JSON.stringify(body),
     };
-    return fetch(url, options)
+    return fetch(url, optionsDefault)
       .then(this.checkStatus)
       .then(parseJSON);
   },
@@ -85,20 +85,20 @@ const Fetch = {
     return this.requestDataJSON('delete', url, body, options);
   },
   html: function(url: string, params: object, options: IDefaultOptions) {
-    var url = mergeParameters(url, params);
-    var options = {
+    url = mergeParameters(url, params);
+    const optionsDefault = {
       headers: this.defaultHeaders(options),
       credentials: this.defaultCredentials(options),
     };
-    return fetch(url, options).then(this.checkStatus);
+    return fetch(url, optionsDefault).then(this.checkStatus);
   },
   text: function(url: string, options: IDefaultOptions) {
-    var url = mergeParameters(url, options);
-    var options = {
+    url = mergeParameters(url, options);
+    const optionsDefault = {
       headers: this.defaultHeaders(options),
       credentials: this.defaultCredentials(options),
     };
-    return fetch(url, options)
+    return fetch(url, optionsDefault)
       .then(this.checkStatus)
       .then(parseText);
   },
@@ -107,13 +107,13 @@ const Fetch = {
     form,
     options: { headers: any; credentials: any; body: FormData; method: any },
   ) {
-    var options = {
+    const optionsDefault = {
       headers: this.defaultHeadersHTML(options),
       credentials: this.defaultCredentials(options),
       body: new FormData(document.querySelector(form)),
       method: options.method || 'post',
     };
-    return fetch(url, options).then(this.checkStatus);
+    return fetch(url, optionsDefault).then(this.checkStatus);
   },
 };
 
@@ -130,6 +130,7 @@ const parseJSON = response => response.json();
 
 const parseText = response => response.text();
 
+/* tslint:disable */
 export const encodeParams = function(a): any {
   var s = [],
     rbracket = /\[\]$/,

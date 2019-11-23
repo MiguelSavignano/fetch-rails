@@ -6,6 +6,7 @@
   "repository": "https://github.com/MiguelSavignano/fetch-rails",
   "scripts": {
     "generate:docs": "typedoc --plugin typedoc-plugin-markdown --out docs",
+    "lint": "tslint 'src/**/*.ts'",
     "build:uglify": "uglifyjs lib/fetch-rails.js -o lib/fetch-rails.min.js",
     "build:ts": "rm -fr lib && tsc",
     "build": "npm run build:ts && npm run build:uglify",
@@ -27,6 +28,7 @@
     "chai": "^3.5.0",
     "mocha": "^5.2.0",
     "ts-node": "^8.5.2",
+    "tslint": "^5.20.1",
     "typedoc": "^0.15.2",
     "typedoc-plugin-markdown": "^2.2.11",
     "typescript": "^3.7.2",
