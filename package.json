@@ -1,8 +1,8 @@
 {
   "name": "fetch-rails",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "wrapper fetch with rails CSRF token.",
-  "main": "lib/fetch-rails.js",
+  "main": "index.js",
   "repository": "https://github.com/MiguelSavignano/fetch-rails",
   "scripts": {
     "generate:docs": "typedoc --plugin typedoc-plugin-markdown --out docs",
